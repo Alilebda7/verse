@@ -1,0 +1,290 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Tajawal:wght@400;700&family=Amiri&display=swap");
+
+.duas-main {
+  width: 100%;
+  margin-top: 24px;
+  padding: 6px 0 0 0;
+}
+
+.duas-header {
+  width: 100%;
+  padding: 10px 0 6px 0;
+  border-radius: 0;
+  background: transparent;
+  color: inherit;
+}
+
+.duas-main-title {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin: 0;
+}
+
+.duas-en {
+  font-family: Inter, system-ui, Arial, sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.duas-ar {
+  font-family: "Tajawal", "Noto Naskh Arabic", serif;
+  font-size: 20px;
+  font-weight: 700;
+  direction: rtl;
+  color: var(--theme-teal);
+}
+
+.duas-sub {
+  font-size: 13px;
+  opacity: 1;
+  margin-top: 6px;
+  color: var(--text-muted);
+}
+
+.duas-body {
+  display: flex;
+  gap: 18px;
+  margin-top: 14px;
+  padding: 18px 0;
+}
+
+.duas-list {
+  width: 260px;
+  padding-right: 12px;
+  max-height: 520px;
+  overflow-y: auto;
+}
+
+.duas-list::-webkit-scrollbar {
+  width: 10px;
+}
+
+.duas-list::-webkit-scrollbar-thumb {
+  background: var(--theme-teal-light);
+  border-radius: 10px;
+}
+
+.duas-list ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.duas-list li {
+  padding: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: all 0.2s ease;
+  margin-bottom: 4px;
+}
+
+.duas-list li:hover {
+  background: var(--bg-secondary);
+  transform: translateX(4px);
+  color: var(--text-main);
+}
+
+.duas-list li.active {
+  background: var(--theme-teal-dim);
+  font-weight: 800;
+  color: var(--theme-teal);
+  box-shadow: inset 4px 0 0 var(--theme-teal);
+}
+
+.duas-detail {
+  flex: 1;
+  min-width: 260px;
+  background: var(--bg-card);
+  padding: 24px;
+  border-radius: 16px;
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-sm);
+}
+
+.duas-controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.duas-controls select {
+  padding: 8px;
+  border-radius: 8px;
+  background: var(--bg-secondary);
+  color: var(--text-main);
+  border: 1px solid var(--border-medium);
+  cursor: pointer;
+}
+
+.duas-title {
+  margin-top: 8px;
+  margin-bottom: 12px;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.dua-items {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.dua-card {
+  background: var(--bg-card);
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid var(--border-light);
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.dua-card:hover {
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-4px);
+  border-color: var(--theme-teal-light);
+  background: var(--bg-card-hover);
+}
+
+.dua-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.dua-copy {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-medium);
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  color: var(--theme-teal);
+  font-weight: 600;
+  font-size: 12px;
+  transition: all 0.2s;
+}
+
+.dua-copy:hover {
+  background: var(--theme-teal);
+  color: white;
+}
+
+.dua-source {
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.dua-arabic {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--text-main);
+  font-family: "Tajawal", "Noto Naskh Arabic", "Amiri", serif;
+  background: var(--bg-secondary);
+  padding: 16px;
+  border-radius: 12px;
+  display: block;
+  line-height: 1.8;
+  margin-bottom: 12px;
+}
+
+.dua-arabic[dir="rtl"] {
+  text-align: right;
+}
+
+.dua-translit {
+  font-size: 16px;
+  color: var(--text-secondary);
+  margin-top: 8px;
+  font-weight: 600;
+}
+
+.dua-translation {
+  font-size: 16px;
+  color: var(--text-main);
+  margin-top: 10px;
+  line-height: 1.6;
+}
+
+.dua-translit-row,
+.dua-translation-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.field-copy {
+  background: transparent;
+  border: 1px solid var(--border-medium);
+  padding: 6px 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.field-copy:hover {
+  background: var(--bg-secondary);
+  color: var(--theme-teal);
+}
+
+@media (max-width: 860px) {
+  .duas-body {
+    flex-direction: column;
+  }
+  .duas-list {
+    width: 100%;
+    padding-right: 0;
+    max-height: 200px;
+    overflow-y: auto;
+    display: flex;
+    overflow-x: auto;
+    padding-bottom: 10px;
+  }
+  .duas-list ul {
+    display: flex;
+    gap: 10px;
+  }
+  .duas-list li {
+    white-space: nowrap;
+    margin-bottom: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .duas-header.section-intro h2 {
+    font-size: 32px;
+  }
+  .dua-arabic {
+    font-size: 22px;
+  }
+  .duas-detail {
+    padding: 15px;
+  }
+}
+
+/* decorative Arabic calligraphic word and header tweaks */
+.duas-ar-art {
+  font-family: "Amiri", "Tajawal", "Noto Naskh Arabic", serif;
+  font-size: 34px;
+  color: var(--theme-teal);
+  margin-top: 6px;
+  letter-spacing: 0.6px;
+  opacity: 0.95;
+}
+
+.duas-header.section-intro h2 {
+  margin: 0 0 6px 0;
+  color: var(--text-main);
+  font-family: "Outfit", sans-serif;
+  font-size: 52px;
+  font-weight: 850;
+  line-height: 1.05;
+}

@@ -1,0 +1,150 @@
+.prayer-times-widget {
+  padding: 16px;
+  background: var(--bg-card);
+  border-radius: 16px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-light);
+}
+
+.prayer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.prayer-location h3 {
+  margin: 0;
+  color: var(--text-main);
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.prayer-location-sub {
+  color: var(--text-muted);
+  font-size: 13px;
+  margin-top: 4px;
+}
+
+.prayer-current-time {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.time-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.current-time-text {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-main);
+  font-family: "Outfit", sans-serif;
+}
+
+.format-toggle {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-medium);
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.format-toggle:hover {
+  background: var(--theme-teal);
+  color: white;
+  border-color: var(--theme-teal);
+}
+
+.hijri-date {
+  color: var(--text-muted);
+  font-size: 12px;
+  margin-top: 2px;
+}
+
+.prayer-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.prayer-card {
+  background: var(--bg-secondary);
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--border-light);
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+}
+
+.prayer-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+  border-color: var(--theme-teal-light);
+}
+
+.prayer-name {
+  font-size: 12px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.prayer-time {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--theme-teal);
+  font-family: "Outfit", sans-serif;
+}
+
+/* Specific variants can be added if needed, but keeping it clean for dark mode */
+
+.prayer-controls {
+  margin-top: 16px;
+  display: flex;
+  gap: 10px;
+}
+
+.btn-retry,
+.btn-calendar {
+  padding: 8px 12px;
+  font-size: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.btn-retry {
+  background: var(--theme-teal);
+  color: white;
+  border: none;
+}
+
+.btn-retry:hover {
+  background: var(--theme-teal-light);
+  box-shadow: 0 4px 12px var(--theme-teal-glow);
+}
+
+.btn-calendar {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-medium);
+}
+
+.btn-calendar:hover {
+  background: var(--bg-secondary);
+  color: var(--text-main);
+}
