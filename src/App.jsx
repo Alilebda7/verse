@@ -11,6 +11,7 @@ import MoodGuide from "./components/MoodGuide";
 import Footer from "./components/Footer";
 import { Routes, Route } from "react-router-dom";
 import { translations } from "./translations";
+import logoIcon from "./images/icon.png";
 
 const IconPrev = () => (
   <svg
@@ -566,7 +567,11 @@ function App() {
                 <div className="header-container">
                   <header className="header">
                     <div className="logo-box">
-                      <div className="logo-star">V</div>
+                      <img
+                        src={logoIcon}
+                        alt="Verse Logo"
+                        className="logo-img"
+                      />
                       <span className="logo-text">Verse</span>
                     </div>
                     <nav>

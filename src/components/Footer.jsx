@@ -157,12 +157,13 @@ export default function Footer({ lang = "en", t }) {
               </span>
             </li>
             <li>
-              <span
-                className="link-disabled"
-                title={txt("Coming Soon", "قريباً")}
+              <a
+                href="mailto:alilebda6@gmail.com"
+                className="footer-contact-link"
               >
-                {txt("Contact Support", "اتصل بالدعم")}
-              </span>
+                <span>{txt("Contact Support", "اتصل بالدعم")}</span>
+                <span className="contact-email">alilebda6@gmail.com</span>
+              </a>
             </li>
           </ul>
         </div>

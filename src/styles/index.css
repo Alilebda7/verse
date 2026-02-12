@@ -182,27 +182,16 @@ body {
   text-decoration: none;
 }
 
-.logo-star {
-  width: 38px;
-  height: 38px;
-  background: var(--theme-teal-light);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  clip-path: polygon(
-    50% 0%,
-    61% 35%,
-    98% 35%,
-    68% 57%,
-    79% 91%,
-    50% 70%,
-    21% 91%,
-    32% 57%,
-    2% 35%,
-    39% 35%
-  );
-  color: white;
-  font-size: 16px;
+.logo-img {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 12px var(--theme-teal-glow));
+  transition: transform 0.3s ease;
+}
+
+.logo-box:hover .logo-img {
+  transform: rotate(15deg) scale(1.1);
 }
 
 .logo-text {
@@ -328,9 +317,9 @@ nav ul li a.active {
 [dir="rtl"] .logo-box {
   gap: 15px;
 }
-[dir="rtl"] .logo-star {
-  width: 44px;
-  height: 44px;
+[dir="rtl"] .logo-img {
+  width: 48px;
+  height: 48px;
 }
 
 [dir="rtl"] nav ul li a,
