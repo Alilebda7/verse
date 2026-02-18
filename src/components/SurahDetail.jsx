@@ -141,6 +141,8 @@ const SurahDetail = ({
   continueReadingData,
   onAyahView,
   lang,
+  bookmarks,
+  toggleBookmark,
 }) => {
   const [surahData, setSurahData] = useState(null);
   const [translationData, setTranslationData] = useState(null);
@@ -161,6 +163,7 @@ const SurahDetail = ({
   const [fontSize, setFontSize] = useState(32);
   const [fontFamily, setFontFamily] = useState("Amiri");
   const [showSettings, setShowSettings] = useState(false);
+  const [isFocusMode, setIsFocusMode] = useState(false);
   const [useTajweed, setUseTajweed] = useState(false);
   const [translationLanguage, setTranslationLanguage] = useState(
     lang === "ar" ? "ar.muyassar" : "en.sahih",
@@ -179,12 +182,26 @@ const SurahDetail = ({
   const [tafsirContent, setTafsirContent] = useState(null);
   const [tafsirLoading, setTafsirLoading] = useState(false);
   const [tafsirError, setTafsirError] = useState(null);
-  const [bookmarks, setBookmarks] = useState(() =>
-    JSON.parse(localStorage.getItem("quran_bookmarks") || "[]"),
-  );
-  const [notes, setNotes] = useState(() =>
-    JSON.parse(localStorage.getItem("quran_notes") || "{}"),
-  );
+  const [notes, setNotes] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem("quran_notes") || "{}");
+    } catch (e) {
+      return {};
+    }
+  });
+
+  // Batch Rendering Logic (Crazy Pre-rendering Feature)
+  const [visibleCount, setVisibleCount] = useState(10);
+  useEffect(() => {
+    if (playingAyah) {
+      const currentIdx = playingAyah.numberInSurah;
+      // If we are getting close to the end of visible batch (3rd one of the current 5-block)
+      // We expand the "rendered" list by another 5
+      if (currentIdx + 2 >= visibleCount) {
+        setVisibleCount((prev) => prev + 5);
+      }
+    }
+  }, [playingAyah, visibleCount]);
 
   useEffect(() => {
     if (playingAyah && viewMode === "mushaf") {
@@ -252,25 +269,6 @@ const SurahDetail = ({
       setSelectedAyah(ayah);
       onAyahView(surahData, ayah.numberInSurah, ayah.page);
     }
-  };
-
-  const toggleBookmark = (ayah) => {
-    const isBookmarked = bookmarks.some((b) => b.number === ayah.number);
-    let newBookmarks;
-    if (isBookmarked) {
-      newBookmarks = bookmarks.filter((b) => b.number !== ayah.number);
-    } else {
-      newBookmarks = [
-        ...bookmarks,
-        {
-          number: ayah.number,
-          surah: surahNumber,
-          ayahNum: ayah.numberInSurah,
-        },
-      ];
-    }
-    setBookmarks(newBookmarks);
-    localStorage.setItem("quran_bookmarks", JSON.stringify(newBookmarks));
   };
 
   const handleTafsirOpen = (ayah) => {
@@ -489,12 +487,33 @@ Read more at: Verse Website
     );
 
   return (
-    <div className="surah-detail-container">
+    <div
+      className={`surah-detail-container ${isFocusMode ? "focus-mode-active" : ""}`}
+    >
       <div className="detail-top-bar">
         <button className="back-link" onClick={onBack}>
           {lang === "ar" ? "→" : "←"} {txt("Back List", "العودة للقائمة")}
         </button>
         <div className="right-controls">
+          <button
+            className={`btn-focus-mode ${isFocusMode ? "active" : ""}`}
+            onClick={() => setIsFocusMode(!isFocusMode)}
+            title={txt("Focus Mode", "وضع التركيز")}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
+            </svg>
+          </button>
           <button
             className={`btn-settings ${showSettings ? "active" : ""}`}
             onClick={() => setShowSettings(!showSettings)}
@@ -650,97 +669,99 @@ Read more at: Verse Website
                   {txt("Loading Page...", "جارٍ تحميل الصفحة...")}
                 </div>
               ) : (
-                pageData?.ayahs.map((ayah, index) => {
-                  const isPlaying = playingAyah?.number === ayah.number;
-                  const isSelected = selectedAyah?.number === ayah.number;
+                pageData?.ayahs
+                  ?.filter((a) => a.surah.number === Number(surahNumber))
+                  .map((ayah, index) => {
+                    const isPlaying = playingAyah?.number === ayah.number;
+                    const isSelected = selectedAyah?.number === ayah.number;
 
-                  return (
-                    <span
-                      key={ayah.number}
-                      id={`ayah-${ayah.numberInSurah}`}
-                      className={`ayah-span ${isSelected ? "selected" : ""} ${isPlaying ? "playing" : ""}`}
-                      onClick={(e) => handleAyahClick(e, ayah)}
-                    >
+                    return (
                       <span
-                        dangerouslySetInnerHTML={{
-                          __html: parseTajweedText(ayah.text),
-                        }}
-                      />
-                      <span className="ayah-end-marker">
-                        &#64831;{toArabicNumerals(ayah.numberInSurah)}&#64830;
-                      </span>
+                        key={ayah.number}
+                        id={`ayah-${ayah.numberInSurah}`}
+                        className={`ayah-span ${isSelected ? "selected" : ""} ${isPlaying ? "playing" : ""}`}
+                        onClick={(e) => handleAyahClick(e, ayah)}
+                      >
+                        <span
+                          dangerouslySetInnerHTML={{
+                            __html: parseTajweedText(ayah.text),
+                          }}
+                        />
+                        <span className="ayah-end-marker">
+                          &#64831;{toArabicNumerals(ayah.numberInSurah)}&#64830;
+                        </span>
 
-                      {isSelected && (
-                        <div className="ayah-actions-popover">
-                          <button
-                            className={`ayah-action-btn ${isPlaying ? "active" : ""}`}
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              playAyah(ayah, surahData);
-                            }}
-                            title={txt("Play Recitation", "تشغيل التلاوة")}
-                          >
-                            {isPlaying ? <IconPause /> : <IconPlay />}
-                          </button>
-                          <button
-                            className="ayah-action-btn"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleTranslationOpen(ayah);
-                            }}
-                            title={txt("View Translation", "عرض الترجمة")}
-                          >
-                            <IconBook />
-                          </button>
-                          <button
-                            className="ayah-action-btn"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleTafsirOpen(ayah);
-                            }}
-                            title={txt("Read Tafsir", "قراءة التفسير")}
-                          >
-                            <IconTafsir />
-                          </button>
-                          <button
-                            className={`ayah-action-btn ${bookmarks.some((b) => b.number === ayah.number) ? "active" : ""}`}
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              toggleBookmark(ayah);
-                            }}
-                            title={txt(
-                              "Toggle Bookmark",
-                              "إضافة/إزالة إشارة مرجعية",
-                            )}
-                          >
-                            <IconBookmark
-                              filled={bookmarks.some(
-                                (b) => b.number === ayah.number,
+                        {isSelected && (
+                          <div className="ayah-actions-popover">
+                            <button
+                              className={`ayah-action-btn ${isPlaying ? "active" : ""}`}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                playAyah(ayah, surahData);
+                              }}
+                              title={txt("Play Recitation", "تشغيل التلاوة")}
+                            >
+                              {isPlaying ? <IconPause /> : <IconPlay />}
+                            </button>
+                            <button
+                              className="ayah-action-btn"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleTranslationOpen(ayah);
+                              }}
+                              title={txt("View Translation", "عرض الترجمة")}
+                            >
+                              <IconBook />
+                            </button>
+                            <button
+                              className="ayah-action-btn"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleTafsirOpen(ayah);
+                              }}
+                              title={txt("Read Tafsir", "قراءة التفسير")}
+                            >
+                              <IconTafsir />
+                            </button>
+                            <button
+                              className={`ayah-action-btn ${bookmarks.some((b) => b.number === ayah.number) ? "active" : ""}`}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                toggleBookmark(ayah, surahNumber);
+                              }}
+                              title={txt(
+                                "Toggle Bookmark",
+                                "إضافة/إزالة إشارة مرجعية",
                               )}
-                            />
-                          </button>
-                          <button
-                            className="ayah-action-btn"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleCopy(ayah);
-                            }}
-                            title={txt("Copy Ayah", "نسخ الآية")}
-                          >
-                            <IconCopy />
-                          </button>
-                          <button
-                            className="ayah-action-btn"
-                            onClick={(e) => e.stopPropagation()}
-                            title={txt("Share Ayah", "مشاركة الآية")}
-                          >
-                            <IconShare />
-                          </button>
-                        </div>
-                      )}
-                    </span>
-                  );
-                })
+                            >
+                              <IconBookmark
+                                filled={bookmarks.some(
+                                  (b) => b.number === ayah.number,
+                                )}
+                              />
+                            </button>
+                            <button
+                              className="ayah-action-btn"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleCopy(ayah);
+                              }}
+                              title={txt("Copy Ayah", "نسخ الآية")}
+                            >
+                              <IconCopy />
+                            </button>
+                            <button
+                              className="ayah-action-btn"
+                              onClick={(e) => e.stopPropagation()}
+                              title={txt("Share Ayah", "مشاركة الآية")}
+                            >
+                              <IconShare />
+                            </button>
+                          </div>
+                        )}
+                      </span>
+                    );
+                  })
               )}
             </div>
           </div>
@@ -750,7 +771,7 @@ Read more at: Verse Website
       {/* VERSE BY VERSE MODE - COZY CARDS */}
       {viewMode === "verse" && (
         <div className="verse-by-verse-container">
-          {surahData?.ayahs.map((ayah) => {
+          {surahData?.ayahs.slice(0, visibleCount).map((ayah) => {
             const isPlaying = playingAyah?.number === ayah.number;
             const isBookmarked = bookmarks.some(
               (b) => b.number === ayah.number,
@@ -780,7 +801,7 @@ Read more at: Verse Website
                     </button>
                     <button
                       className={`verse-action-icon ${isBookmarked ? "active" : ""}`}
-                      onClick={() => toggleBookmark(ayah)}
+                      onClick={() => toggleBookmark(ayah, surahNumber)}
                       title={txt("Bookmark", "إشارة")}
                     >
                       <IconBookmark filled={isBookmarked} />

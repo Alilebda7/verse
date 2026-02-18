@@ -5,18 +5,6 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  animation: slideInFromRight 0.5s cubic-bezier(0.19, 1, 0.22, 1);
-}
-
-@keyframes slideInFromRight {
-  from {
-    opacity: 0;
-    transform: translateX(50px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
 }
 
 .detail-top-bar {
@@ -73,6 +61,62 @@
   background: var(--bg-secondary);
   border-color: var(--theme-teal-light);
   color: var(--theme-teal);
+}
+
+.btn-focus-mode {
+  background: var(--bg-card);
+  border: 1px solid var(--border-medium);
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-focus-mode:hover {
+  background: var(--bg-secondary);
+  color: var(--theme-teal);
+}
+
+.btn-focus-mode.active {
+  background: var(--theme-teal);
+  color: #fff;
+  border-color: var(--theme-teal);
+  box-shadow: 0 4px 12px var(--theme-teal-glow);
+}
+
+/* Focus Mode Activation */
+.focus-mode-active .surah-title-section,
+.focus-mode-active .view-mode-selector {
+  display: none;
+}
+
+.focus-mode-active .mushaf-container,
+.focus-mode-active .verse-by-verse-container {
+  margin-top: 40px;
+  max-width: 1200px;
+  border: none;
+  background: transparent;
+  box-shadow: none;
+}
+
+.focus-mode-active .surah-detail-container {
+  background: var(--bg-page);
+  padding-top: 20px;
+}
+
+.focus-mode-active .detail-top-bar {
+  opacity: 0.1;
+  transition: opacity 0.3s;
+}
+
+.focus-mode-active .detail-top-bar:hover {
+  opacity: 1;
 }
 
 .page-indicator {

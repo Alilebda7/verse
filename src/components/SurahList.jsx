@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import "../styles/SurahList.css";
 
 const SurahList = ({ onSurahClick, order = "number", lang, t }) => {
@@ -35,7 +36,6 @@ const SurahList = ({ onSurahClick, order = "number", lang, t }) => {
 
   const filteredSurahs = sortedSurahs.filter((s) => {
     const term = searchTerm.toLowerCase();
-    // Search in English name, number, and Arabic name
     return (
       s.englishName.toLowerCase().includes(term) ||
       s.number.toString() === term ||
@@ -72,6 +72,21 @@ const SurahList = ({ onSurahClick, order = "number", lang, t }) => {
       </div>
     );
 
+  const gridVariants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const cardVariants = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0 },
+  };
+
   return (
     <div className="surah-list-container">
       <div className="list-search-bar">
@@ -84,24 +99,24 @@ const SurahList = ({ onSurahClick, order = "number", lang, t }) => {
         />
       </div>
 
-      <div className="surah-grid">
+      <motion.div
+        className="surah-grid"
+        variants={gridVariants}
+        initial="hidden"
+        animate="show"
+      >
         {currentSurahs.map((surah) => (
-          <div
+          <motion.div
             key={surah.number}
             className="surah-card"
+            variants={cardVariants}
+            whileHover={{ y: -8, transition: { duration: 0.2 } }}
             onClick={() => onSurahClick(surah.number)}
           >
             <div className="ghost-number">{surah.number}</div>
             <div className="surah-card-header">
               <div className="surah-num-badge">{surah.number}</div>
-              {/* If AR: show English name small in corner or just rely on main name? */}
-              {/* Keeping layout consistent: left side (LTR) has badge/Ar name? */}
-              {/* In RTL, left is right. */}
-              {/* Let's follow the requested design: Ar main if Ar mode */}
-              <div
-                className="surah-name-ar"
-                style={{ fontFamily: lang === "ar" ? "Amiri" : "Amiri" }}
-              >
+              <div className="surah-name-ar" style={{ fontFamily: "Amiri" }}>
                 {lang === "ar" ? surah.englishName : surah.name}
               </div>
             </div>
@@ -109,11 +124,7 @@ const SurahList = ({ onSurahClick, order = "number", lang, t }) => {
               <h3 className="surah-name-en">
                 {lang === "ar" ? surah.name : surah.englishName}
               </h3>
-              <p className="surah-sub-en">
-                {lang === "ar"
-                  ? surah.englishNameTranslation
-                  : surah.englishNameTranslation}
-              </p>
+              <p className="surah-sub-en">{surah.englishNameTranslation}</p>
               <div className="surah-footer">
                 <span className="surah-verses-pill">
                   {surah.numberOfAyahs} {t.surah_ayahs}
@@ -123,9 +134,9 @@ const SurahList = ({ onSurahClick, order = "number", lang, t }) => {
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
 
       <div className="pagination">
         {Array.from({ length: totalPages }, (_, i) => (

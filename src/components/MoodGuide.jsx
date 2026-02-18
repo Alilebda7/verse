@@ -6,7 +6,7 @@ const moods = [
     id: "anxious",
     label: "Anxious",
     label_ar: "قلق",
-    emoji: "🧘",
+    icon_class: "mood-icon-anxious",
     color: "#6366f1",
     recommendation: {
       surah: 13,
@@ -19,7 +19,7 @@ const moods = [
     id: "sad",
     label: "Sad",
     label_ar: "حزين",
-    emoji: "🌙",
+    icon_class: "mood-icon-sad",
     color: "#3b82f6",
     recommendation: {
       surah: 93,
@@ -32,7 +32,7 @@ const moods = [
     id: "grateful",
     label: "Grateful",
     label_ar: "ممتن",
-    emoji: "✨",
+    icon_class: "mood-icon-grateful",
     color: "#10b981",
     recommendation: {
       surah: 14,
@@ -45,7 +45,7 @@ const moods = [
     id: "hopeful",
     label: "Seeking Hope",
     label_ar: "باحث عن الأمل",
-    emoji: "☀️",
+    icon_class: "mood-icon-hopeful",
     color: "#f59e0b",
     recommendation: {
       surah: 39,
@@ -58,7 +58,7 @@ const moods = [
     id: "patience",
     label: "Struggling",
     label_ar: "صابر",
-    emoji: "⚓",
+    icon_class: "mood-icon-patience",
     color: "#8b5cf6",
     recommendation: {
       surah: 2,
@@ -83,8 +83,8 @@ export default function MoodGuide({ lang = "en", onJump }) {
         <h2>{txt("How are you feeling today?", "كيف تشعر اليوم؟")}</h2>
         <p>
           {txt(
-            "Select an emotion to find comfort and guidance from the Holy Quran.",
-            "اختر شعوراً لتجد الراحة والهداية من القرآن الكريم.",
+            "Find solace and direction through the verses of the Quran tailored to your current state.",
+            "تأمل في آيات الله لتجد السكينة والتوجيه المناسب لحالك اليوم.",
           )}
         </p>
       </div>
@@ -97,7 +97,7 @@ export default function MoodGuide({ lang = "en", onJump }) {
             onClick={() => setSelectedMood(m)}
             style={{ "--mood-color": m.color }}
           >
-            <span className="mood-emoji">{m.emoji}</span>
+            <div className={`mood-icon-placeholder ${m.icon_class}`}></div>
             <span className="mood-label">{txt(m.label, m.label_ar)}</span>
           </button>
         ))}

@@ -10,9 +10,13 @@ export default function PrayerTimes({ lang = "en", t }) {
   const [city, setCity] = useState(DEFAULT.city);
   const [country, setCountry] = useState(DEFAULT.country);
   const [hijri, setHijri] = useState(null);
-  const [timezone, setTimezone] = useState(
-    Intl.DateTimeFormat().resolvedOptions().timeZone,
-  );
+  const [timezone, setTimezone] = useState(() => {
+    try {
+      return Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
+    } catch (e) {
+      return "UTC";
+    }
+  });
   const [now, setNow] = useState(new Date());
   const [use12Hour, setUse12Hour] = useState(true);
 

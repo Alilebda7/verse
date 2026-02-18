@@ -27,6 +27,120 @@ const DAILY_WISDOMS = [
     source_ar: "سورة غافر ٤٠:٦٠",
     arabic: "ادْعُونِي أَسْتَجِبْ لَكُمْ",
   },
+  {
+    text: "And whoever relies upon Allah – then He is sufficient for him.",
+    source: "Surah At-Talaq 65:3",
+    source_ar: "سورة الطلاق ٦٥:٣",
+    arabic: "وَمَن يَتَوَكَّلْ عَلَى اللَّهِ فَهُوَ حَسْبُهُ",
+  },
+  {
+    text: "Allah is Gentle with His servants.",
+    source: "Surah Ash-Shura 42:19",
+    source_ar: "سورة الشورى ٤٢:١٩",
+    arabic: "اللَّهُ لَطِيفٌ بِعِبَادِهِ",
+  },
+  {
+    text: "And be patient. Indeed, Allah is with the patient.",
+    source: "Surah Al-Anfal 8:46",
+    source_ar: "سورة الأنفال ٨:٤٦",
+    arabic: "وَاصْبِرُوا إِنَّ اللَّهَ مَعَ الصَّابِرِينَ",
+  },
+  {
+    text: "My mercy encompasses all things.",
+    source: "Surah Al-A'raf 7:156",
+    source_ar: "سورة الأعراف ٧:١٥٦",
+    arabic: "وَرَحْمَتِي وَسِعَتْ كُلَّ شَيْءٍ",
+  },
+  {
+    text: "Indeed, Allah loves those who trust Him.",
+    source: "Surah Aal-E-Imran 3:159",
+    source_ar: "سورة آل عمران ٣:١٥٩",
+    arabic: "إِنَّ اللَّهَ يُحِبُّ الْمُتَوَكِّلِينَ",
+  },
+  {
+    text: "And speak to people good words.",
+    source: "Surah Al-Baqarah 2:83",
+    source_ar: "سورة البقرة ٢:٨٣",
+    arabic: "وَقُولُوا لِلنَّاسِ حُسْنًا",
+  },
+  {
+    text: "So truly where there is hardship, there is also ease.",
+    source: "Surah Ash-Sharh 94:5",
+    source_ar: "سورة الشرح ٩٤:٥",
+    arabic: "فَإِنَّ مَعَ الْعُسْرِ يُسْرًا",
+  },
+  {
+    text: "Indeed, Allah is Forgiving and Merciful.",
+    source: "Surah An-Nisa 4:96",
+    source_ar: "سورة النساء ٤:٩٦",
+    arabic: "إِنَّ اللَّهَ كَانَ غَفُورًا رَّحِيمًا",
+  },
+  {
+    text: "And whoever fears Allah – He will make for him a way out.",
+    source: "Surah At-Talaq 65:2",
+    source_ar: "سورة الطلاق ٦٥:٢",
+    arabic: "وَمَن يَتَّقِ اللَّهَ يَجْعَل لَّهُ مَخْرَجًا",
+  },
+  {
+    text: "Allah does not burden a soul beyond that it can bear.",
+    source: "Surah Al-Baqarah 2:286",
+    source_ar: "سورة البقرة ٢:٢٨٦",
+    arabic: "لَا يُكَلِّفُ اللَّهُ نَفْسًا إِلَّا وُسْعَهَا",
+  },
+  {
+    text: "And Allah is the best of planners.",
+    source: "Surah Aal-E-Imran 3:54",
+    source_ar: "سورة آل عمران ٣:٥٤",
+    arabic: "وَاللَّهُ خَيْرُ الْمَاكِرِينَ",
+  },
+  {
+    text: "Indeed, the remembrance of Allah brings peace to hearts.",
+    source: "Surah Ar-Ra'd 13:28",
+    source_ar: "سورة الرعد ١٣:٢٨",
+    arabic: "أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ",
+  },
+  {
+    text: "And your Lord is not forgetful.",
+    source: "Surah Maryam 19:64",
+    source_ar: "سورة مريم ١٩:٦٤",
+    arabic: "وَمَا كَانَ رَبُّكَ نَسِيًّا",
+  },
+  {
+    text: "Indeed, Allah is with those who do good.",
+    source: "Surah Al-Ankabut 29:69",
+    source_ar: "سورة العنكبوت ٢٩:٦٩",
+    arabic: "إِنَّ اللَّهَ لَمَعَ الْمُحْسِنِينَ",
+  },
+  {
+    text: "And whoever is mindful of Allah, He will make his matter easy.",
+    source: "Surah At-Talaq 65:4",
+    source_ar: "سورة الطلاق ٦٥:٤",
+    arabic: "وَمَن يَتَّقِ اللَّهَ يَجْعَل لَّهُ مِنْ أَمْرِهِ يُسْرًا",
+  },
+  {
+    text: "Indeed, Allah is Subtle with whom He wills.",
+    source: "Surah Yusuf 12:100",
+    source_ar: "سورة يوسف ١٢:١٠٠",
+    arabic: "إِنَّ رَبِّي لَطِيفٌ لِّمَا يَشَاءُ",
+  },
+  {
+    text: "Say: Nothing will happen to us except what Allah has decreed for us.",
+    source: "Surah At-Tawbah 9:51",
+    source_ar: "سورة التوبة ٩:٥١",
+    arabic: "قُل لَّن يُصِيبَنَا إِلَّا مَا كَتَبَ اللَّهُ لَنَا",
+  },
+  {
+    text: "And whoever puts their trust in Allah – He is sufficient for them.",
+    source: "Surah At-Talaq 65:3",
+    source_ar: "سورة الطلاق ٦٥:٣",
+    arabic: "وَمَن يَتَوَكَّلْ عَلَى اللَّهِ فَهُوَ حَسْبُهُ",
+  },
+  {
+    text: "Indeed, Allah loves those who are constantly repentant.",
+    source: "Surah Al-Baqarah 2:222",
+    source_ar: "سورة البقرة ٢:٢٢٢",
+    arabic: "إِنَّ اللَّهَ يُحِبُّ التَّوَّابِينَ",
+  },
 ];
 
 export default function Footer({ lang = "en", t }) {
@@ -70,7 +184,7 @@ export default function Footer({ lang = "en", t }) {
           </div>
           <p className="brand-mission">{T.footer_mission}</p>
           <div className="social-links">
-            <a href="#" aria-label="Github">
+            <a href="https://github.com/Alilebda7/verse" aria-label="Github">
               <svg
                 width="20"
                 height="20"
@@ -101,69 +215,43 @@ export default function Footer({ lang = "en", t }) {
               <a href="#quran">{T.link_quran}</a>
             </li>
             <li>
-              <a href="#learn">{T.link_learn}</a>
-            </li>
-            <li>
               <a href="#duas">{T.link_adhkar}</a>
             </li>
             <li>
               <a href="#prayer-times">{T.link_prayer}</a>
             </li>
             <li>
-              <span
-                className="link-disabled"
-                title={txt("Coming Soon", "قريباً")}
-              >
-                {T.link_names}
-              </span>
+              <a href="#names">{T.link_names}</a>
             </li>
           </ul>
         </div>
 
-        {/* Community / Resources Column */}
+        {/* Support Column */}
         <div className="footer-col links-col">
-          <h3 className="col-header">{txt("Community", "المجتمع")}</h3>
+          <h3 className="col-header">{txt("Support", "الدعم")}</h3>
           <ul className="footer-links">
-            <li>
-              <span
-                className="link-disabled"
-                title={txt("Coming Soon", "قريباً")}
-              >
-                {txt("About Us", "من نحن")}
-              </span>
-            </li>
-            <li>
-              <span
-                className="link-disabled"
-                title={txt("Coming Soon", "قريباً")}
-              >
-                {txt("Donate", "تتبرع")}
-              </span>
-            </li>
-            <li>
-              <span
-                className="link-disabled"
-                title={txt("Coming Soon", "قريباً")}
-              >
-                {txt("Mobile App", "تطبيق الهاتف")}
-              </span>
-            </li>
-            <li>
-              <span
-                className="link-disabled"
-                title={txt("Coming Soon", "قريباً")}
-              >
-                {txt("Developers API", "واجهة المطورين")}
-              </span>
-            </li>
             <li>
               <a
                 href="mailto:alilebda6@gmail.com"
-                className="footer-contact-link"
+                className="footer-contact-link-premium"
               >
-                <span>{txt("Contact Support", "اتصل بالدعم")}</span>
-                <span className="contact-email">alilebda6@gmail.com</span>
+                <div className="contact-icon">✉</div>
+                <div className="contact-text">
+                  <span className="contact-label">
+                    {txt("Contact Support", "اتصل بالدعم")}
+                  </span>
+                  <span className="contact-email">alilebda6@gmail.com</span>
+                </div>
               </a>
+            </li>
+            <li className="donate-li">
+              <div className="donate-card-mini">
+                <span className="donate-badge">{txt("Donate", "تبرع")}</span>
+                <p>{txt("Support the project", "ادعم المشروع")}</p>
+                <button disabled className="donate-btn-disabled">
+                  {txt("Coming Soon", "قريباً")}
+                </button>
+              </div>
             </li>
           </ul>
         </div>

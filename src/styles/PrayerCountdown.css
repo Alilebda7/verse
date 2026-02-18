@@ -1,0 +1,108 @@
+.prayer-countdown-bar {
+  padding: 8px 20px;
+  border-radius: 100px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(45, 212, 191, 0.2);
+  margin-bottom: 30px;
+  backdrop-filter: blur(10px);
+  animation: slideInDown 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.countdown-content {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  font-family: "Inter", sans-serif;
+}
+
+.next-tag {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.next-tag strong {
+  color: var(--theme-teal);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--theme-teal);
+}
+
+.dot.pulse {
+  box-shadow: 0 0 0 0 rgba(45, 212, 191, 0.7);
+  animation: pulse-teal 2s infinite;
+}
+
+@keyframes pulse-teal {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(45, 212, 191, 0.7);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 10px rgba(45, 212, 191, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(45, 212, 191, 0);
+  }
+}
+
+.countdown-timer {
+  font-family: "Outfit", sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 1px;
+  min-width: 100px;
+}
+
+.location-tag {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  opacity: 0.8;
+}
+
+@keyframes slideInDown {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .prayer-countdown-bar {
+    padding: 6px 15px;
+    margin-bottom: 20px;
+  }
+  .countdown-content {
+    gap: 12px;
+  }
+  .countdown-timer {
+    font-size: 0.95rem;
+    min-width: 80px;
+  }
+  .next-tag {
+    font-size: 0.75rem;
+  }
+}
