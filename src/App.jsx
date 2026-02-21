@@ -768,11 +768,11 @@ function App() {
 
   // Predictive Audio Pre-rendering (Blob Edition - Parallel & Aggressive)
   const preloadNextAyahs = useCallback(
-    async (currentNum, surahNum) => {
-      const audioMap = surahAudioCache[surahNum];
+    async (currentNum, surahNum, manualAudioMap = null) => {
+      const audioMap = manualAudioMap || surahAudioCache[surahNum];
       if (!audioMap) return;
 
-      const LOOKAHEAD = 10; // Pre-load 10 verses ahead for safety
+      const LOOKAHEAD = 5; // Reduced to 5 as per user request for better performance
       const fetchQueue = [];
 
       for (let i = 1; i <= LOOKAHEAD; i++) {
@@ -780,7 +780,7 @@ function App() {
         const remoteUrl = audioMap[targetNum];
 
         if (remoteUrl && !blobPoolRef.current[remoteUrl]) {
-          console.log(`Queueing Pre-fetch: ${targetNum}`);
+          // console.log(`Queueing Pre-fetch: ${targetNum}`);
           fetchQueue.push(
             (async () => {
               try {
@@ -788,7 +788,7 @@ function App() {
                 const blob = await response.blob();
                 const localUrl = URL.createObjectURL(blob);
                 blobPoolRef.current[remoteUrl] = localUrl;
-                console.log(`Successfully Pre-rendered Verse: ${targetNum}`);
+                // console.log(`Successfully Pre-rendered Verse: ${targetNum}`);
               } catch (e) {
                 console.error(`Pre-fetch failed for Verse ${targetNum}`, e);
               }
@@ -797,7 +797,6 @@ function App() {
         }
       }
 
-      // Run fetches in parallel for maximum speed
       await Promise.all(fetchQueue);
     },
     [surahAudioCache],
@@ -805,46 +804,50 @@ function App() {
 
   const playAyah = useCallback(
     (ayah, surahData) => {
+      // Always stop current playback first
+      audioRef.current.pause();
+      nextAudioRef.current.pause();
+      nextAudioRef.current.src = "";
+
       setPlayingAyah(ayah);
       setPlayingSurahData(surahData);
 
+      // Determine Audio Source
       const cachedSurah = surahAudioCache[surahData.number];
+      // If we don't have the cache yet, we can't play immediately unless we fetch.
+      // But we check if we have a direct blob map match first.
       const remoteUrl = cachedSurah ? cachedSurah[ayah.numberInSurah] : null;
 
-      if (remoteUrl) {
-        const localUrl = blobPoolRef.current[remoteUrl] || remoteUrl;
+      const playAudio = (url, map = null) => {
+        const localUrl = blobPoolRef.current[url] || url;
+        audioRef.current.src = localUrl;
+        audioRef.current.playbackRate = playbackSpeed;
+        audioRef.current.volume = volume;
+        setIsAudioLoading(false);
+        audioRef.current.play().catch((e) => console.error(e));
 
-        // DUAL BUFFER LOGIC: Use current active buffer
-        const currentPlayer =
-          activeBufferRef.current === 1
-            ? audioRef.current
-            : nextAudioRef.current;
-        currentPlayer.src = localUrl;
-        currentPlayer.playbackRate = playbackSpeed;
-        currentPlayer.play().catch((e) => console.error(e));
-
-        // AGGRESSIVE PRE-LOAD: Warm up next 10 verses
-        preloadNextAyahs(ayah.numberInSurah, surahData.number);
-
-        // PRE-PREPARE NEXT BUFFER: Give the other player its source early
-        const nextTargetNum = ayah.numberInSurah + 1;
-        const nextRemoteUrl = cachedSurah[nextTargetNum];
-        if (nextRemoteUrl) {
-          const nextPlayer =
-            activeBufferRef.current === 1
-              ? nextAudioRef.current
-              : audioRef.current;
-          // If we already have the blob, set it now. If not, preloadNextAyahs will grab it.
-          const nextLocalUrl =
-            blobPoolRef.current[nextRemoteUrl] || nextRemoteUrl;
-          nextPlayer.src = nextLocalUrl;
-          nextPlayer.preload = "auto";
+        // Warm up next audio element for gapless feel
+        const effectiveMap = map || cachedSurah;
+        if (effectiveMap) {
+          const nextNum = ayah.numberInSurah + 1;
+          const nextUrl = effectiveMap[nextNum];
+          if (nextUrl) {
+            const nextLocal = blobPoolRef.current[nextUrl] || nextUrl;
+            nextAudioRef.current.src = nextLocal;
+            nextAudioRef.current.load();
+          }
         }
 
+        // Trigger preload sliding window
+        preloadNextAyahs(ayah.numberInSurah, surahData.number, map);
+      };
+
+      if (remoteUrl) {
+        playAudio(remoteUrl);
         return;
       }
 
-      // Fallback for initial load
+      // Fallback: fetch audio map from API
       setIsAudioLoading(true);
       fetch(
         `https://api.alquran.cloud/v1/surah/${surahData.number}/${selectedReciter}`,
@@ -852,39 +855,46 @@ function App() {
         .then((res) => res.json())
         .then((data) => {
           const audioMap = {};
-          data.data.ayahs.forEach((a) => {
-            audioMap[a.numberInSurah] = a.audio;
-          });
+          if (data.data && data.data.ayahs) {
+            data.data.ayahs.forEach((a) => {
+              audioMap[a.numberInSurah] = a.audio;
+            });
+          }
+
           setSurahAudioCache((prev) => ({
             ...prev,
             [surahData.number]: audioMap,
           }));
+
           const url = audioMap[ayah.numberInSurah];
           if (url) {
-            audioRef.current.src = url;
-            audioRef.current.play().catch((e) => console.error(e));
-            preloadNextAyahs(ayah.numberInSurah, surahData.number);
+            playAudio(url, audioMap);
           }
-          if (!surahData.ayahs)
+
+          if (!surahData.ayahs && data.data)
             setPlayingSurahData({ ...surahData, ayahs: data.data.ayahs });
+          setIsAudioLoading(false);
+        })
+        .catch((err) => {
+          console.error("Failed to load surah audio", err);
           setIsAudioLoading(false);
         });
     },
-    [selectedReciter, surahAudioCache, playbackSpeed, preloadNextAyahs],
+    [selectedReciter, surahAudioCache, playbackSpeed, volume, preloadNextAyahs],
   );
 
   const togglePlay = () => {
-    if (isPlaying) audioRef.current.pause();
-    else audioRef.current.play().catch((e) => console.error(e));
+    const player = audioRef.current;
+    if (isPlaying) {
+      player.pause();
+    } else {
+      player.play().catch((e) => console.error(e));
+    }
   };
 
   const playNextAyah = useCallback(() => {
     if (!playingAyah || !playingSurahData || !playingSurahData.ayahs) return;
     const nextNum = playingAyah.numberInSurah + 1;
-
-    // Toggle active buffer
-    activeBufferRef.current = activeBufferRef.current === 1 ? 2 : 1;
-
     const nextAyah = playingSurahData.ayahs.find(
       (a) => a.numberInSurah === nextNum,
     );
@@ -911,25 +921,49 @@ function App() {
     }
   };
 
+  // Sync isPlaying state with the actual audio element
+  useEffect(() => {
+    const player = audioRef.current;
+
+    const onPlay = () => setIsPlaying(true);
+    const onPause = () => setIsPlaying(false);
+    const onWaiting = () => setIsAudioLoading(true);
+    const onCanPlay = () => setIsAudioLoading(false);
+    const onPlaying = () => {
+      setIsPlaying(true);
+      setIsAudioLoading(false);
+    };
+
+    player.addEventListener("play", onPlay);
+    player.addEventListener("pause", onPause);
+    player.addEventListener("waiting", onWaiting);
+    player.addEventListener("canplay", onCanPlay);
+    player.addEventListener("playing", onPlaying);
+
+    return () => {
+      player.removeEventListener("play", onPlay);
+      player.removeEventListener("pause", onPause);
+      player.removeEventListener("waiting", onWaiting);
+      player.removeEventListener("canplay", onCanPlay);
+      player.removeEventListener("playing", onPlaying);
+    };
+  }, []);
+
   useEffect(() => {
     const p1 = audioRef.current;
-    const p2 = nextAudioRef.current;
 
     const handleEnded = () => {
       if (repeatMode === "one") {
-        const current = activeBufferRef.current === 1 ? p1 : p2;
-        current.currentTime = 0;
-        current.play().catch((e) => console.error(e));
+        p1.currentTime = 0;
+        p1.play().catch((e) => console.error(e));
       } else {
         playNextAyah();
       }
     };
 
     p1.addEventListener("ended", handleEnded);
-    p2.addEventListener("ended", handleEnded);
     return () => {
       p1.removeEventListener("ended", handleEnded);
-      p2.removeEventListener("ended", handleEnded);
     };
   }, [repeatMode, playNextAyah]);
 

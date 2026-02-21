@@ -137,6 +137,7 @@ const SurahDetail = ({
   surahNumber,
   onBack,
   playingAyah,
+  isPlaying,
   playAyah,
   continueReadingData,
   onAyahView,
@@ -672,14 +673,14 @@ Read more at: Verse Website
                 pageData?.ayahs
                   ?.filter((a) => a.surah.number === Number(surahNumber))
                   .map((ayah, index) => {
-                    const isPlaying = playingAyah?.number === ayah.number;
+                    const isCurrentAyah = playingAyah?.number === ayah.number;
                     const isSelected = selectedAyah?.number === ayah.number;
 
                     return (
                       <span
                         key={ayah.number}
                         id={`ayah-${ayah.numberInSurah}`}
-                        className={`ayah-span ${isSelected ? "selected" : ""} ${isPlaying ? "playing" : ""}`}
+                        className={`ayah-span ${isSelected ? "selected" : ""} ${isCurrentAyah ? "playing" : ""}`}
                         onClick={(e) => handleAyahClick(e, ayah)}
                       >
                         <span
@@ -694,14 +695,18 @@ Read more at: Verse Website
                         {isSelected && (
                           <div className="ayah-actions-popover">
                             <button
-                              className={`ayah-action-btn ${isPlaying ? "active" : ""}`}
+                              className={`ayah-action-btn ${isCurrentAyah && isPlaying ? "active" : ""}`}
                               onClick={(e) => {
                                 e.stopPropagation();
                                 playAyah(ayah, surahData);
                               }}
                               title={txt("Play Recitation", "تشغيل التلاوة")}
                             >
-                              {isPlaying ? <IconPause /> : <IconPlay />}
+                              {isCurrentAyah && isPlaying ? (
+                                <IconPause />
+                              ) : (
+                                <IconPlay />
+                              )}
                             </button>
                             <button
                               className="ayah-action-btn"
@@ -772,7 +777,7 @@ Read more at: Verse Website
       {viewMode === "verse" && (
         <div className="verse-by-verse-container">
           {surahData?.ayahs.slice(0, visibleCount).map((ayah) => {
-            const isPlaying = playingAyah?.number === ayah.number;
+            const isCurrentAyah = playingAyah?.number === ayah.number;
             const isBookmarked = bookmarks.some(
               (b) => b.number === ayah.number,
             );
@@ -784,7 +789,7 @@ Read more at: Verse Website
               <div
                 key={ayah.number}
                 id={`verse-${ayah.numberInSurah}`}
-                className={`verse-card ${isPlaying ? "playing" : ""}`}
+                className={`verse-card ${isCurrentAyah ? "playing" : ""}`}
               >
                 <div className="verse-card-header">
                   <div className="verse-number-badge">
@@ -793,11 +798,15 @@ Read more at: Verse Website
                   </div>
                   <div className="verse-actions">
                     <button
-                      className={`verse-action-icon ${isPlaying ? "active" : ""}`}
+                      className={`verse-action-icon ${isCurrentAyah && isPlaying ? "active" : ""}`}
                       onClick={() => playAyah(ayah, surahData)}
                       title={txt("Play", "تشغيل")}
                     >
-                      {isPlaying ? <IconPause /> : <IconPlay />}
+                      {isCurrentAyah && isPlaying ? (
+                        <IconPause />
+                      ) : (
+                        <IconPlay />
+                      )}
                     </button>
                     <button
                       className={`verse-action-icon ${isBookmarked ? "active" : ""}`}
