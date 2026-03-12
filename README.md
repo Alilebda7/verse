@@ -57,7 +57,7 @@ Feeling anxious? Sad? Grateful? Use the interactive **Mood Guide** to find comfo
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/verse.git
+   git clone https://github.com/Alilebda7/verse.git
    ```
 2. Navigate to the project directory:
    ```bash
@@ -72,6 +72,7 @@ Feeling anxious? Sad? Grateful? Use the interactive **Mood Guide** to find comfo
    npm start
    ```
    Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Don't forget to set the API keys.
 
 ---
 
